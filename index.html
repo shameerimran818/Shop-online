@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Local Shop</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; background: #f9f9f9; }
+    .header { text-align: center; margin-bottom: 40px; }
+    .product { border: 1px solid #ccc; padding: 16px; background: white; margin-bottom: 20px; border-radius: 8px; }
+    .product img { width: 100%; max-height: 200px; object-fit: cover; border-radius: 4px; }
+    .product h3 { margin: 10px 0 5px; }
+    .form { margin-top: 20px; }
+    input, button { padding: 10px; margin: 8px 0; width: 100%; box-sizing: border-box; }
+    button { background: #0f766e; color: white; border: none; cursor: pointer; }
+    .footer { text-align: center; margin-top: 50px; font-size: 14px; color: #777; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🛒 My Local Shop</h1>
+    <p>Order directly. Cash on Delivery in Pakistan.</p>
+  </div>
+
+  <div id="product-list"></div>
+
+  <div id="order-form" class="form" style="display: none;">
+    <h2>Order: <span id="product-name"></span></h2>
+    <input type="text" id="location" placeholder="Enter your delivery address" required />
+    <input type="text" id="phone" placeholder="Enter your phone number" required />
+    <button onclick="submitOrder()">Place Order</button>
+  </div>
+
+  <div class="footer">
+    &copy; 2025 My Local Shop. Built in Pakistan.
+  </div>
+
+  <script>
+    const products = [
+      {
+        id: 1,
+        name: "Blue Hoodie",
+        description: "Warm cotton hoodie for winter",
+        price: 1500,
+        image: "https://via.placeholder.com/300x200?text=Blue+Hoodie"
+      },
+      {
+        id: 2,
+        name: "Leather Wallet",
+        description: "Premium leather wallet",
+        price: 999,
+        image: "https://via.placeholder.com/300x200?text=Wallet"
+      },
+      {
+        id: 3,
+        name: "Wireless Earbuds",
+        description: "High quality sound & long battery",
+        price: 2499,
+        image: "https://via.placeholder.com/300x200?text=Earbuds"
+      }
+    ];
+
+    let selectedProduct = null;
+
+    function loadProducts() {
+      const list = document.getElementById("product-list");
+      products.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+          <img src="${p.image}" alt="${p.name}" />
+          <h3>${p.name}</h3>
+          <p>${p.description}</p>
+          <strong>PKR ${p.price}</strong><br/>
+          <button onclick='buyProduct(${p.id})'>Buy Now</button>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function buyProduct(id) {
+      selectedProduct = products.find(p => p.id === id);
+      document.getElementById("product-name").innerText = selectedProduct.name;
+      document.getElementById("order-form").style.display = "block";
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function submitOrder() {
+      const location = document.getElementById("location").value;
+      const phone = document.getElementById("phone").value;
+
+      if (!location || !phone) {
+        alert("Please enter both location and phone number.");
+        return;
+      }
+
+      const order = {
+        product: selectedProduct,
+        location,
+        phone
+      };
+
+      console.log("NEW ORDER:", order);
+      alert("Order placed! The owner will contact you soon.");
+      document.getElementById("order-form").style.display = "none";
+    }
+
+    loadProducts();
+  </script>
+</body>
+</html>
